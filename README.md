@@ -32,7 +32,7 @@ The framework is intended for **real environments**, including VDS/VPS deploymen
   
 Below are deployment scenarios extracted from real-world usage.
 
-### **1) Fast setup on VPS (Ubuntu)**
+### 1) Fast setup on VPS (Ubuntu)
 
 ```
 sudo apt-get update
@@ -58,7 +58,7 @@ docker build --tag KageRecon:v1 .
 
 ---
 
-### **2) Running on isolated/offline VM**
+### 2) Running on isolated/offline VM
 
   
 
@@ -78,7 +78,7 @@ docker load -i KageRecon.tar
 
 ---
 
-### **3) Persistent long-term monitoring mode**
+### 3) Persistent long-term monitoring mode
 
 ```
 mkdir /mnt/reports
@@ -95,7 +95,7 @@ docker run -d --restart=always \
 
 ---
 
-### **4) One-time execution**
+### 4) One-time execution
 
 ```
 mkdir /mnt/reports
@@ -112,7 +112,7 @@ docker run --rm -d \
 
 ---
 
-###  **5) Debug mode (modify code without rebuilding)**
+###  5) Debug mode (modify code without rebuilding)
 
 ```
 docker run -it --tty --entrypoint /bin/bash \
@@ -126,7 +126,7 @@ docker run -it --tty --entrypoint /bin/bash \
 
 ---
 
-## **6) Utility commands**
+## 6) Utility commands
 
 ```
 nohup docker logs 66 -n 10000 -f &> log.txt &
@@ -139,7 +139,7 @@ nohup ./KageRecon.sh test.com IP_list.txt subdomains_blacklist.txt subdomains_ad
 
 ---
 
-# ** Parameters**
+# Parameters
 
 |**Param**|**Description**|
 |---|---|
@@ -154,7 +154,7 @@ If you encounter a case where it doesn’t work - contact the author.
 
 ---
 
-# ** Folder Structure**
+# Folder Structure
 
   
 
@@ -179,7 +179,7 @@ Inside each target:
 
 ---
 
-# ** Files**
+# Files
 
 |**File**|**Description**|
 |---|---|
@@ -195,7 +195,7 @@ Inside each target:
 
 ---
 
-# ** Internal Workflow (High-Level)**
+# Internal Workflow (High-Level)
 
 1. Enumerate subdomains (subfinder + additional list)
 2. Normalize and filter blacklist
@@ -209,7 +209,6 @@ Inside each target:
 10. Deduplicate screenshots
 11. Track differences in services, subdomains, screenshots
 12. Send updates via express_* (or any replacement messenger)
-
 
 
 ---

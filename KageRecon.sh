@@ -128,7 +128,6 @@ if [ -f "$path/info/newSubdomains.txt" ];then
 	rm -f $path/info/newSubdomains.txt
 fi
 
-#todo - add import from input list
 
 echo "Update FQDNs list"
 touch $path/info/newSubdomains.txt
@@ -158,7 +157,7 @@ cp $path/info/newSubdomains.temp $path/info/newSubdomains.txt
 rm -f $path/info/newSubdomains.temp
 
 
-#todo - add rm -rf for blacklisted subdomains folders
+
 [ -s "$blacklist" ] && deleteOutScoped $blacklist $path/info/newSubdomains.txt 
 [ -s "$blacklist" ] && deleteOutScoped $blacklist $path/info/subdomains.txt
 
@@ -176,7 +175,6 @@ done < $path/info/newSubdomains.txt
 
 xargs -a $iplist -I % sh -c './cidr.sh % >> all_allowed_IP.tmp'
 
-#добавить проверку что он существует
 grep -vf all_allowed_IP.tmp subdomains_with_IP.tmp > outOfRangeFQDN_IP.txt
 
 # uncomment this later. blacklist for IP
@@ -184,7 +182,7 @@ grep -vf all_allowed_IP.tmp subdomains_with_IP.tmp > outOfRangeFQDN_IP.txt
 
 cat outOfRangeFQDN_IP.txt | cut -f 1 > outOfRangeFQDN.txt
 
-# проверяем что среди новых поддоменов нет не входящих в список IP
+
 [ -s "$iplist" ] && deleteOutScoped outOfRangeFQDN.txt $path/info/newSubdomains.txt
 [ -s "$iplist" ] && deleteOutScoped outOfRangeFQDN.txt $path/info/subdomains.txt
 
@@ -220,7 +218,7 @@ if [ -f "$path/info/masscan.xml" ];then
 	rm -f $path/info/masscan.xml
 fi
 
-# может отказаться от uniq ?
+
 masscan $masscanParam -iL $iplist -oX $path/info/masscan.xml
 open_ports=$(cat $path/info/masscan.xml | grep portid | cut -d "\"" -f 10 | sort -n | uniq | paste -sd,)
 cat $path/info/masscan.xml | grep portid | cut -d "\"" -f 4 | sort -V | uniq > $path/info/nmap_targets.tmp
@@ -260,7 +258,7 @@ while read fqdn; do
 done < $path/info/subdomains.txt
 
 
-#todo - add new address discovery   
+
 #cat $path/info/subdomains.txt $path/info/ip_port.txt > $path/info/OLD-subdmsAndIP.txt
 cat $path/info/subdomains_port.txt $path/info/ip_port.txt > $path/info/subdmsAndIP.txt
 
@@ -435,7 +433,6 @@ if [[ ! -d "$path/info/screenshots_diff/" ]] ;then mkdir $path/info/screenshots_
 
 if [ ! -z "$(ls -A $path/info/screenshots_trusted/)" ];then
 	# if the folder is not empty:
-	# todo - delete parallel
 	python3 pic_dedup.py -d "$path/info/screenshots_trusted/" "$path/info/screenshots_new/"	
 	find $path/info/screenshots_new/ -type f -exec mv {} $path/info/screenshots_diff/ \;
     ls -d1 $path/info/screenshots_diff/*  | parallel --jobs 1 --delay 2 "python3 express_pic.py --p {} --t {/.}"
@@ -450,14 +447,6 @@ echo "Screenshot comparison completed at" $(date)
 # Shodan
 # xargs -a $iplist -I % sh -c './cidr.sh % | nrich - | grep -B 4 Vulnerabilities && sleep 10' > $path/info/shodan.txt
 
-#todo - add non web
-
-#todo - add password bruteforce
-
-#todo - add Nessus/Netsparker
-
-#todo - add nmap scripts
-
 
 echo "---------------------"
 echo "Brutespray"
@@ -466,7 +455,6 @@ echo "---------------------"
 sudo path="${path}" bash << EOF
 if [[ -f $path/info/brutespray_status.done ]]; then sudo bash -c './scan_with_brutespray.sh $path > /dev/null &' && echo "Brutespray started" ; else echo "Brutespray not finished yet" ; fi
 EOF
-#todo - add 1) scan params 2)import of finded URLs 3) reports
 
 echo "---------------------"
 echo "Acunetix"
@@ -475,7 +463,6 @@ echo "---------------------"
 path="${path}" bash << EOF
 if [[ -f $path/info/acunetix_status.done ]]; then bash -c './scan_with_acunetix.sh $path > /dev/null &' && echo "Acunetix started" ; else echo "Acunetix not finished yet" ; fi
 EOF
-# todo - add 1) scan params 2)import of finded URLs 3) reports
 
 
 run_nuclei_scan() {
